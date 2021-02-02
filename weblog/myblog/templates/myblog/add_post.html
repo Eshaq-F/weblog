@@ -1,0 +1,19 @@
+{% extends 'myblog/base.html' %}
+{% block title %}افزودن پست{% endblock %}
+{% load static %}
+{% load bootstrap %}
+
+{% block extra-link %}
+<link rel="stylesheet" type="text/css" href="{% static 'myblog/css/add_post.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="col-7 bg-muted mx-auto p-3">
+    <form id="add-post-form" method="post">
+    {% csrf_token %}
+    {{ form|bootstrap }}
+
+    <input type="submit" value="ساختن پست" class="btn btn-primary text-center">
+</form>
+</div>
+{% endblock %}

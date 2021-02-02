@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'myblog.apps.MyblogConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,5 +113,9 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
-MEDIA_ROOT = BASE_DIR / 'media'
+LOGIN_URL = 'accounts/login'
+
+LOGIN_REDIRECT_URL = '/pass/'
+LOGOUT_REDIRECT_URL = '/pass/'

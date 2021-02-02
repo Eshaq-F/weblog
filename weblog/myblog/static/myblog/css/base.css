@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'Far.Nazanin';
+    src: url('https://cdn.fontcdn.ir/Font/Persian/Yekan/Yekan.css');
+}
+
+* {
+font-family: "Scheherazade";
+}
+
+.account {
+  border-radius: 15px;
+}
+.button1 {
+  border-radius: 20px 20px 20px 20px;
+}
