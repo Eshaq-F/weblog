@@ -8,12 +8,33 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-7 bg-muted mx-auto p-3">
-    <form id="add-post-form" method="post">
-    {% csrf_token %}
-    {{ form|bootstrap }}
 
-    <input type="submit" value="ساختن پست" class="btn btn-primary text-center">
+<form class="col-8 bg-muted mx-auto mt-5 mb-2" method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-md-5">
+          <input type="text" name="title" maxlength="50" class=" form-control" placeholder="عنوان..." id="id_title" required>
+      </div>
+      <div class="form-group col-md-7">
+          <input type="text" name="tag" maxlength="2000" class="form-control" placeholder="برچسب..." id="id_tag">
+          <small class="text-muted">
+              <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+              {{ form.tag.help_text }}
+          </small>
+      </div>
+    </div>
+    <div class="form-group">
+        {{ form.category|bootstrap }}
+    </div>
+    <div class="form-group">
+        <label class="text-muted">متن پست:</label>
+        <textarea name="content" cols="40" rows="10" class="form-control" id="id_content" required></textarea>
+    </div>
+    <div class="custom-file">
+        <input type="file" name="image" accept="image/*" value="dd" class="custom-file-input" id="id_image" required>
+        <label class="custom-file-label text-center" for="id_image">تصوير را انتخاب كنيد...</label>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">ذخيره كردن</button>
 </form>
-</div>
+
 {% endblock %}

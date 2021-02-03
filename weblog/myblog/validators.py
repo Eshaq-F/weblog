@@ -2,10 +2,10 @@ from django.core.exceptions import ValidationError
 
 
 def check_phone_number(value):
-    phone_number = value.strip().reaplace('+', '')
+    phone_number = value.strip().replace('+', '')
     if not phone_number.isdecimal():
         raise ValidationError('فرمت شماره وارد شده اشتباه است!')
-    elif len(phone_number) != 12:
+    elif len(phone_number) < 11 or len(phone_number) > 12:
         raise ValidationError('شماره وارد شده صحيح نمي‌باشد !')
 
 

@@ -34,7 +34,7 @@ class Post(models.Model):
 
     title = models.CharField('عنوان', max_length=50)
     content = models.TextField('محتوا')
-    image = models.ImageField('تصوير', upload_to='posts_img')
+    image = models.ImageField('تصوير', upload_to='posts_img', null=True)
     tag = models.CharField('برچسب', max_length=2000, blank=True, validators=[check_tag],
                            help_text='برچسب ها با# آغاز مي‌شوند و فقط شامل حروف الفبا و _ مي‌شوند.'
                                      'برچسب‌ها را با فاصله از هم جدا كنيد')

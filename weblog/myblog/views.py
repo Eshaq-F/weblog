@@ -20,8 +20,9 @@ def add_post(request):
             post = post_form.save(commit=False)
             post.author = request.user
             post.save()
-
-            return HttpResponseRedirect(reverse('myblog:index'))
+            for i in post_form:
+                print(i)
+            return HttpResponseRedirect(reverse('myblog:home'))
     else:
         post_form = PostForm()
 
