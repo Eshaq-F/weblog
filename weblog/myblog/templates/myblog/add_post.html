@@ -9,7 +9,8 @@
 
 {% block content %}
 
-<form class="col-8 bg-muted mx-auto mt-5 mb-2" method="post">
+<form class="col-8 bg-muted mx-auto mt-5 mb-2" action="{% url 'myblog:add_post' %}" enctype="multipart/form-data"
+      method="post">
     {% csrf_token %}
     <div class="form-row">
       <div class="form-group col-md-5">

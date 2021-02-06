@@ -14,7 +14,7 @@ def view_post(request, post_id):
 
 def add_post(request):
     if request.method == 'POST':
-        post_form = PostForm(request.POST)
+        post_form = PostForm(request.POST, request.FILES)
 
         if post_form.is_valid():
             post = post_form.save(commit=False)
