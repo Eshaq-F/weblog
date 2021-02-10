@@ -7,18 +7,83 @@
 {% endblock %}
 
 {% block content %}
-    <div class="col-8 rounded bg-light mx-3 mt-3 p-2">
-        <div class="col-12 p-1 mt-2 mb-3 d-flex justify-content-between">
-            <div class="col d-inline-block">
-                <h1 class="display-3">{{ post.title }}</h1>
+<div class="col-12 py-4 px-5 d-flex justify-content-between">
+
+    <div class="col-4">
+        <div class="card border-dark mb-3 " style="max-width: 22.5rem">
+            <div class="card-header">اطلاعات پست</div>
+            <div class="card-body text-dark">
+                <h6>
+                    <table>
+                    <tr>
+                        <td class="font-weight-bold">نويسنده:</td><td>&nbsp;</td>
+                        <td class="text-danger">{{ post.author.get_full_name }}</td>
+                    </tr>
+                    </table>
+                </h6>
+                <table>
+                <tr>
+                    <td class="font-weight-bold">دسته‌بندي:</td><td>&nbsp;</td>
+                    <td>
+                        <a href="{% url 'myblog:post_by_category' post.category.id %}" class="text-decoration-none">
+                            {{ post.category }}
+                        </a>
+                    </td>
+                </tr>
+                </table>
+                <p class="d-block font-weight-bold m-0">برچسب‌ها:</p>
+                    {% for tag in post.tag.all %}
+                        <a href="#">
+                            &nbsp;{{ tag }}
+                        </a>
+                    {% endfor %}
             </div>
-            <img src="{{ post.image.url }}" class="img-thumbnail" width="400">
-        </div>
-        <p class="m-2">{{ post.content }}</p>
+            <div class="card-footer p-0 d-flex justify-content-between">
+                <small class="text-muted mr-2">آخرين ويرايش:</small>
+                <small class="text-muted ml-2" id="pub-date">{{ post.pub_date }}</small>
+            </div>
     </div>
-    <div class="col-8 bg-secondary rounded mx-3 mt-1 mb-4 p-3 d-flex justify-content-between align-items-center">
-        <img src="{{ post.author.userextrainfo.image.url }}" class="rounded-circle bg-light m-0 ml-2" width="75">
-        <p class="m-0 ml-auto text-bolder font-weight-bold">نويسنده: {{ post.author.get_full_name }}</p>
-        <p class="m-0 text-light">{{ post.pub_date }}</p>
+
+    <div class="col-12 bg-light my-4 py-3 rounded">
+        <ul class="list-unstyled">
+            {% for category in categories %}
+            <li class="mb-3">
+                <a href="{% url 'myblog:post_by_category' category.id %}" class="text-dark text-decoration-none font-weight-bold">
+                    {{ category }}
+                </a>
+                {% for sub in category.get_sub_groups %}
+                <ul>
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <a href="{% url 'myblog:post_by_category' sub.id %}" class="text-muted text-decoration-none">
+                        {{ sub }}
+                    </a>
+                </ul>
+                {% endfor %}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
+    </div>
+
+    <div class="col-8 rounded bg-light p-0">
+        <h2 class="m-2">
+            <small><i class="fa fa-asterisk" aria-hidden="true"></i></small>
+            {{ post.title }}
+        </h2>
+        <img src="{{ post.image.url }}" class="img-fluid m-0 rounded" alt="Responsive image" width="100%">
+        <p class="my-3 mb-5 mx-5">{{ post.content }}</p>
+    </div>
+</div>
+
+<script>
+var now = new Date({{ post.pub_date.year }}, {{ post.pub_date.month }}, {{ post.pub_date.day }},
+{{ post.pub_date.hour }}, {{ post.pub_date.minute }}, {{ post.pub_date.second }})
+</script>
+
+{% endblock %}
+
+{% block static %}
+{{ block.super }}
+<script src="https://gist.github.com/unicornist/0e37b3691551c42c716e96c125b99df7.js"></script>
+<script src="/static/myblog/js/view_post.js"></script>
 {% endblock %}

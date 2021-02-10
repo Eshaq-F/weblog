@@ -11,7 +11,8 @@ class Command(BaseCommand):
         parser.add_argument('--set', action='store_true', help='To set permission for an existing group.')
 
     def handle(self, *args, **options):
-        author_perms = ["add_post", "change_post", "view_post", "add_comment", "view_comment", "change_activation"]
+        author_perms = ["add_post", "change_post", "view_post", "add_comment", "view_comment",
+                        "change_activation", "add_tag", "view_tag"]
         editor_perms = author_perms + ["can_confirm_posts", "change_comment", "can_confirm_comments",
                                        "change_all_activation"]
         admin_perms = editor_perms + ["add_user", "change_user", "view_user", "delete_user", "view_likepostlog",

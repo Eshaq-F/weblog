@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils.timezone import now
 from django.contrib.auth.models import User
 from .validators import check_phone_number, check_tag
 
@@ -18,6 +17,26 @@ class Category(models.Model):
     name = models.CharField('نام', max_length=30, unique=True)
     parent = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name='سرشاخه', null=True, blank=True)
 
+    def get_sub_groups(self):
+        categories = Category.objects.filter(parent=self)
+        return categories
+
+    def __str__(self):
+        return self.name
+
+
+class Tag(models.Model):
+    class Meta:
+        verbose_name = 'برچسب'
+        verbose_name_plural = 'برچسب‌ها'
+
+    name = models.CharField(max_length=30, validators=[check_tag],
+                            help_text='برچسب ها با# آغاز مي‌شوند و فقط شامل حروف الفبا و _ مي‌شوند. '
+                                      'برچسب‌ها را با فاصله از هم جدا كنيد')
+
+    def count_used(self):
+        return Post.objects.filter(tag__name=self.name).count()
+
     def __str__(self):
         return self.name
 
@@ -35,16 +54,14 @@ class Post(models.Model):
     title = models.CharField('عنوان', max_length=50)
     content = models.TextField('محتوا')
     image = models.ImageField('تصوير', upload_to='posts_img', null=True)
-    tag = models.CharField('برچسب', max_length=2000, blank=True, validators=[check_tag],
-                           help_text='برچسب ها با# آغاز مي‌شوند و فقط شامل حروف الفبا و _ مي‌شوند.'
-                                     'برچسب‌ها را با فاصله از هم جدا كنيد')
+    tag = models.ManyToManyField(Tag, verbose_name='برچسب')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='دسته‌بندي')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='نويسنده')
     is_active = models.BooleanField('فعال', default=True)
     is_confirmed = models.BooleanField('مجاز', default=False)
     like = models.IntegerField('پسنديده', default=0)
     dislike = models.IntegerField('نپسنديده', default=0)
-    pub_date = models.DateTimeField('تاريخ‌ انتشار', default=now)
+    pub_date = models.DateTimeField('تاريخ‌ انتشار', auto_now=True)
 
     def __str__(self):
         return self.title

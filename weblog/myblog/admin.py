@@ -5,8 +5,10 @@ from .models import *
 
 
 class PostAdmin(admin.ModelAdmin):
-    fields = ['title', 'content', 'image', 'tag', 'category', 'author', 'like', 'dislike', 'pub_date']
-    readonly_fields = ['like', 'dislike', 'pub_date']
+    fields = ["title", "content", "image", "tag", "category", "author", "is_active",
+              "is_confirmed", "like", "dislike", "pub_date"]
+    list_filter = ['category', 'tag']
+    readonly_fields = ['like', 'dislike', 'pub_date', 'category', 'author', 'image']
     list_display = ('title', 'author', 'pub_date', 'is_active', 'is_confirmed')
     actions = ['active_all_post', 'deactive_all_post']
 
@@ -79,6 +81,12 @@ class CommentAdmin(admin.ModelAdmin):
         return super().change_view(request, object_id, form_url, extra_context=None)
 
 
+class TagAdmin(admin.ModelAdmin):
+    fields = ['name']
+    list_display = ('name', 'count_used',)
+    Tag.count_used.short_description = 'دفعات استفاده'
+
+
 class UserExtraInfoInline(admin.StackedInline):
     model = UserExtraInfo
     can_delete = False
@@ -91,6 +99,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(Category)
+admin.site.register(Tag, TagAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(LikeCommentLog)
