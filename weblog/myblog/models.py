@@ -30,15 +30,13 @@ class Tag(models.Model):
         verbose_name = 'برچسب'
         verbose_name_plural = 'برچسب‌ها'
 
-    name = models.CharField(max_length=30, validators=[check_tag],
-                            help_text='برچسب ها با# آغاز مي‌شوند و فقط شامل حروف الفبا و _ مي‌شوند. '
-                                      'برچسب‌ها را با فاصله از هم جدا كنيد')
+    label = models.CharField(max_length=30, unique=True,validators=[check_tag])
 
     def count_used(self):
-        return Post.objects.filter(tag__name=self.name).count()
+        return Post.objects.filter(tag__label=self.label).count()
 
     def __str__(self):
-        return self.name
+        return self.label
 
 
 class Post(models.Model):
@@ -54,7 +52,10 @@ class Post(models.Model):
     title = models.CharField('عنوان', max_length=50)
     content = models.TextField('محتوا')
     image = models.ImageField('تصوير', upload_to='posts_img', null=True)
-    tag = models.ManyToManyField(Tag, verbose_name='برچسب')
+    tag = models.ManyToManyField(Tag, verbose_name='برچسب',
+                                 help_text='برچسب ها با# آغاز مي‌شوند و فقط شامل حروف الفبا و _ مي‌شوند. '
+                                           'برچسب‌ها را با فاصله از هم جدا كنيد',
+                                 null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='دسته‌بندي')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='نويسنده')
     is_active = models.BooleanField('فعال', default=True)

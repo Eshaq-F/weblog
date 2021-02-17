@@ -5,6 +5,10 @@
 
 {% block extra-link %}
 <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/add_post.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -17,11 +21,17 @@
           <input type="text" name="title" maxlength="50" class=" form-control" placeholder="عنوان..." id="id_title" required>
       </div>
       <div class="form-group col-md-7">
-          <input type="text" name="tag" maxlength="2000" class="form-control" placeholder="برچسب..." id="id_tag">
-          <small class="text-muted">
-              <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-              {{ form.label.help_text }}
+          <div class="container">
+                <select class="js-select2 form-control" multiple="multiple" id="id_tag" name="tag">
+                    {%  for tag in tags %}
+                    <option value="{{ tag.id }}" data-badge="">{{ tag }}</option>
+                    {% endfor %}
+                </select>
+          <small>
+              <i class="fa fa-hand-o-left" aria-hidden="true"></i>
+              برچسب‌ها با # شروع شده و فقط شامل حروف الفبا و _ مي‌شوند.
           </small>
+          </div>
       </div>
     </div>
     <div class="form-group">
@@ -35,7 +45,16 @@
         <input type="file" name="image" accept="image/*" value="dd" class="custom-file-input" id="id_image" required>
         <label class="custom-file-label text-center" for="id_image">تصوير را انتخاب كنيد...</label>
     </div>
-    <button type="submit" class="btn btn-primary mt-2">ذخيره كردن</button>
+    <div class="col-12 text-center my-3">
+        <button type="submit" class="btn btn-primary">ذخيره كردن</button>
+    </div>
 </form>
 
+{% endblock %}
+
+{% block static %}
+{{ block.super }}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+<script src="/static/myblog/js/add_post.js"></script>
 {% endblock %}

@@ -10,4 +10,5 @@ urlpatterns = [
     path('add_post/', views.add_post, name='add_post'),
     path('all_posts/', views.post_collection, name='all_posts'),
     path('post_by_category/<int:category_id>/', views.post_by_category, name='post_by_category'),
+    path('post_by_tag/<int:tag_id>/', views.post_by_tag, name='post_by_tag'),
 ]

@@ -8,4 +8,5 @@ from .models import *
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title", "tag", "content", "category", "image"]
+        fields = ["title", "content", "category", "image"]
+        tag = forms.SelectMultiple()

@@ -10,11 +10,26 @@ def check_phone_number(value):
 
 
 def check_tag(value):
-    tags = value.strip().split()
-    for i in tags:
-        tag = i.replace('#', '')
-        tag = tag.replace('_', '')
-        if not i.startswith('#'):
-            raise ValidationError('فرمت وارد شده براي برچسب ها صحيح نمي‌باشد !')
-        elif not tag.isalpha():
-            raise ValidationError('فرمت وارد شده براي برچسب ها صحيح نمي‌باشد !')
+    tag = value.strip().replace('#', '').replace('_', '')
+    print(tag)
+    if not value.startswith('#'):
+        raise ValidationError('فرمت وارد شده براي برچسب ها صحيح نمي‌باشد !')
+    elif not tag.isalpha():
+        raise ValidationError('فرمت وارد شده براي برچسب ها صحيح نمي‌باشد !')
+    elif len(value) > 30:
+        raise ValidationError('فرمت وارد شده براي برچسب ها صحيح نمي‌باشد !')
+    else:
+        return True
+
+
+def check_tag_form(value):
+    tag = value.strip().replace('#', '').replace('_', '')
+    print(tag)
+    if not value.startswith('#'):
+        return False
+    elif not tag.isalpha():
+        return False
+    elif len(value) > 30:
+        return False
+    else:
+        return True

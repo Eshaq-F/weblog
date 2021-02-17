@@ -1,0 +1,22 @@
+.scrollmenu {
+    width: 97%;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollmenu::-webkit-scrollbar {
+    display: none;
+}
+
+div.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+    border-radius: 14px;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+}

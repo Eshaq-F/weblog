@@ -67,8 +67,8 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    fields = ['content', 'post', 'like', 'dislike']
-    readonly_fields = ['post', 'like', 'dislike']
+    fields = ['content', 'post', 'like', 'dislike', 'user']
+    readonly_fields = ['like', 'dislike']
     list_display = ('__str__', 'post', 'is_confirmed')
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
@@ -82,8 +82,8 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-    fields = ['name']
-    list_display = ('name', 'count_used',)
+    fields = ['label']
+    list_display = ('label', 'count_used',)
     Tag.count_used.short_description = 'دفعات استفاده'
 
 

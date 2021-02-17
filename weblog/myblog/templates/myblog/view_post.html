@@ -13,27 +13,32 @@
         <div class="card border-dark mb-3 " style="max-width: 22.5rem">
             <div class="card-header">اطلاعات پست</div>
             <div class="card-body text-dark">
-                <h6>
-                    <table>
-                    <tr>
-                        <td class="font-weight-bold">نويسنده:</td><td>&nbsp;</td>
-                        <td class="text-danger">{{ post.author.get_full_name }}</td>
-                    </tr>
-                    </table>
-                </h6>
-                <table>
-                <tr>
-                    <td class="font-weight-bold">دسته‌بندي:</td><td>&nbsp;</td>
-                    <td>
-                        <a href="{% url 'myblog:post_by_category' post.category.id %}" class="text-decoration-none">
-                            {{ post.category }}
-                        </a>
-                    </td>
-                </tr>
-                </table>
+                <div class="col d-flex p-0">
+                    <img src="{{ post.author.userextrainfo.image.url }}" class="img-thumbnail rounded" width="70">
+                    <div class="col pt-2">
+                        <h6 class="mb-4">
+                            <table>
+                                <tr>
+                                    <td class="font-weight-bold">نويسنده:</td><td>&nbsp;</td>
+                                    <td class="text-muted">{{ post.author.get_full_name }}</td>
+                                </tr>
+                            </table>
+                        </h6>
+                        <table>
+                            <tr>
+                                <td class="font-weight-bold">دسته‌بندي:</td><td>&nbsp;</td>
+                                <td>
+                                    <a href="{% url 'myblog:post_by_category' post.category.id %}" class="text-decoration-none">
+                                        {{ post.category }}
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <p class="d-block font-weight-bold m-0">برچسب‌ها:</p>
                     {% for tag in post.tag.all %}
-                        <a href="#">
+                        <a href="{% url 'myblog:post_by_tag' tag.id %}" class="btn-sm btn-dark m-1">
                             &nbsp;{{ tag }}
                         </a>
                     {% endfor %}
@@ -73,6 +78,32 @@
         <img src="{{ post.image.url }}" class="img-fluid m-0 rounded" alt="Responsive image" width="100%">
         <p class="my-3 mb-5 mx-5">{{ post.content }}</p>
     </div>
+</div>
+
+<div class="col-11 mx-auto mb-3 rounded shadow">
+    {% for comment in comments %}
+    <div class="p-3 d-flex align-items-center justify-content-center">
+        <img src="{{ comment.user.userextrainfo.image.url }}" class="shadow rounded-circle ml-3"
+             width="70" height="70">
+        <div class="col-10">
+            <p class="text-primary mb-0">{{ comment.user.get_full_name }}:</p>
+            <div class="col-10 p-3 bg-dark h-75 d-flex align-items-center rounded">
+                <p class="text-light my-auto">{{ comment.content }}</p>
+            </div>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" dir="ltr">
+            <button class="btn bg-light px-4 like" id="{{ comment.id }}-l">
+                <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
+                <small>{{ comment.like }}</small>
+            </button>
+            <button class="btn bg-light px-4 dislike" id="{{ comment.id }}-d">
+                <i class="fa fa-thumbs-down text-danger fa-lg" aria-hidden="true"></i>
+                <small>{{ comment.dislike }}</small>
+            </button>
+	    </div>
+        </div>
+    </div>
+    <hr class="mx-5 bg-secondary">
+    {% endfor %}
 </div>
 
 <script>

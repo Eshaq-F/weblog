@@ -1,0 +1,28 @@
+{% extends 'myblog/base.html' %}
+{% load static %}
+{% block title %}برچسب{% endblock %}
+
+{% block extra-link %}
+<link rel="stylesheet" type="text/css" href="{% static 'myblog/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between mt-4 mr-3 ml-2">
+    {% for post in posts %}
+        <div class="card mx-2 mb-3 shadow" style="width: 27em;">
+            <div class="row no-gutters">
+                <div class="col-sm-6" style="background: #868e96;">
+                    <img src="{{ post.image.url }}" class="card-img-top h-100" alt="...">
+                </div>
+                <div class="col-sm-6">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.content|truncatewords:25 }}</p>
+                        <a href="{% url 'myblog:view_post' post.id %}" class="btn-sm btn-primary stretched-link">مشاهده</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
