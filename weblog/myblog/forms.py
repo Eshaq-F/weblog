@@ -1,7 +1,4 @@
 from django import forms
-from dal import autocomplete
-from django.forms import modelformset_factory, NumberInput
-from django.core.exceptions import ValidationError
 from .models import *
 
 
@@ -10,3 +7,9 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ["title", "content", "category", "image"]
         tag = forms.SelectMultiple()
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["content"]

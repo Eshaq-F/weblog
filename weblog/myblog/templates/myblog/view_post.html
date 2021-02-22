@@ -1,6 +1,7 @@
 {% extends 'myblog/base.html' %}
 {% block title %}مشاهده پست{% endblock %}
 {% load static %}
+{% load bootstrap %}
 
 {% block extra-link %}
 <link rel="stylesheet" type="text/css" href="{% static 'myblog/css/view_post.css' %}">
@@ -8,98 +9,99 @@
 
 {% block content %}
 <div class="col-12 py-4 px-5 d-flex justify-content-between">
-
-    <div class="col-4">
-        <div class="card border-dark mb-3 " style="max-width: 22.5rem">
-            <div class="card-header">اطلاعات پست</div>
-            <div class="card-body text-dark">
-                <div class="col d-flex p-0">
-                    <img src="{{ post.author.userextrainfo.image.url }}" class="img-thumbnail rounded" width="70">
-                    <div class="col pt-2">
-                        <h6 class="mb-4">
-                            <table>
-                                <tr>
-                                    <td class="font-weight-bold">نويسنده:</td><td>&nbsp;</td>
-                                    <td class="text-muted">{{ post.author.get_full_name }}</td>
-                                </tr>
-                            </table>
-                        </h6>
-                        <table>
-                            <tr>
-                                <td class="font-weight-bold">دسته‌بندي:</td><td>&nbsp;</td>
-                                <td>
-                                    <a href="{% url 'myblog:post_by_category' post.category.id %}" class="text-decoration-none">
-                                        {{ post.category }}
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <p class="d-block font-weight-bold m-0">برچسب‌ها:</p>
-                    {% for tag in post.tag.all %}
+    <div class="col-12 rounded bg-light p-0">
+        <div class="row m-0 p-2 d-flex justify-content-between">
+            <div class="col">
+                <h2 class="font-weight-bold mb-5">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    {{ post.title }}
+                </h2>
+                <div class="card border-dark mb-3 " style="max-width: 28rem">
+                    <div class="card-header">اطلاعات پست</div>
+                    <div class="card-body text-dark">
+                        <div class="col d-flex p-0">
+                            <img src="{{ post.author.userextrainfo.image.url }}" class="img-thumbnail rounded"
+                                 width="70">
+                            <div class="col pt-2">
+                                <h6 class="mb-4">
+                                    <table>
+                                        <tr>
+                                            <td class="font-weight-bold">نويسنده:</td>
+                                            <td>&nbsp;</td>
+                                            <td class="text-muted">{{ post.author.get_full_name }}</td>
+                                        </tr>
+                                    </table>
+                                </h6>
+                                <table>
+                                    <tr>
+                                        <td class="font-weight-bold">دسته‌بندي:</td>
+                                        <td>&nbsp;</td>
+                                        <td>
+                                            <a href="{% url 'myblog:post_by_category' post.category.id %}"
+                                               class="text-decoration-none">
+                                                {{ post.category }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <p class="d-block font-weight-bold m-0">برچسب‌ها:</p>
+                        {% for tag in post.tag.all %}
                         <a href="{% url 'myblog:post_by_tag' tag.id %}" class="btn-sm btn-dark m-1">
                             &nbsp;{{ tag }}
                         </a>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer p-0 d-flex justify-content-between">
+                        <small class="text-muted mr-2">آخرين ويرايش:</small>
+                        <small class="text-muted ml-2" id="pub-date">{{ post.pub_date }}</small>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer p-0 d-flex justify-content-between">
-                <small class="text-muted mr-2">آخرين ويرايش:</small>
-                <small class="text-muted ml-2" id="pub-date">{{ post.pub_date }}</small>
-            </div>
-    </div>
-
-    <div class="col-12 bg-light my-4 py-3 rounded">
-        <ul class="list-unstyled">
-            {% for category in categories %}
-            <li class="mb-3">
-                <a href="{% url 'myblog:post_by_category' category.id %}" class="text-dark text-decoration-none font-weight-bold">
-                    {{ category }}
-                </a>
-                {% for sub in category.get_sub_groups %}
-                <ul>
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <a href="{% url 'myblog:post_by_category' sub.id %}" class="text-muted text-decoration-none">
-                        {{ sub }}
-                    </a>
-                </ul>
-                {% endfor %}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    </div>
-
-    <div class="col-8 rounded bg-light p-0">
-        <h2 class="m-2">
-            <small><i class="fa fa-asterisk" aria-hidden="true"></i></small>
-            {{ post.title }}
-        </h2>
-        <img src="{{ post.image.url }}" class="img-fluid m-0 rounded" alt="Responsive image" width="100%">
+            <img src="{{ post.image.url }}" class="rounded" width="500">
+        </div>
         <p class="my-3 mb-5 mx-5">{{ post.content }}</p>
     </div>
+</div>
+
+<div class="col-11 bg-dark mx-auto mb-4 mt-2 py-2 px-5 shadow" style="border-radius: 130px;">
+    <form enctype="multipart/form-data" class="d-flex flex-column" action="{% url 'myblog:view_post' post.id %}"
+          method="post">
+        {% csrf_token %}
+        <div class="col d-flex justify-content-start">
+            <img src="{{ request.user.userextrainfo.image.url }}" class="rounded-circle ml-3 mt-auto"
+                 width="70" height="70">
+            <div>
+                <p class="text-light bd-highlight">{{ request.user.get_full_name }}:</p>
+                <textarea name="content" cols="40" rows="2" maxlength="400" class="form-control d-inline"
+                          id="id_content" placeholder="شما هم نظر بگذاريد..." required style="width: 52em"></textarea>
+            </div>
+        </div>
+        <input type="submit" value="ثبت نظر" class="btn btn-outline-light w-25 mx-auto my-2">
+    </form>
 </div>
 
 <div class="col-11 mx-auto mb-3 rounded shadow">
     {% for comment in comments %}
     <div class="p-3 d-flex align-items-center justify-content-center">
-        <img src="{{ comment.user.userextrainfo.image.url }}" class="shadow rounded-circle ml-3"
+        <img src="{{ comment.user.userextrainfo.image.url }}" class="rounded-circle ml-3"
              width="70" height="70">
         <div class="col-10">
             <p class="text-primary mb-0">{{ comment.user.get_full_name }}:</p>
-            <div class="col-10 p-3 bg-dark h-75 d-flex align-items-center rounded">
+            <div class="col-11 p-3 bg-dark h-75 d-flex align-items-center justify-content-between rounded">
                 <p class="text-light my-auto">{{ comment.content }}</p>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" dir="ltr">
+                    <button class="btn bg-light rounded-circle p-2 like" id="{{ comment.id }}-l">
+                        <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
+                    </button>
+                    <span class="badge badge-pill badge-danger">{{ comment.like}}</span>
+                    <button class="btn bg-light rounded-circle p-2 dislike" id="{{ comment.id }}-d">
+                        <i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i>
+                    </button>
+                    <span class="badge badge-pill badge-danger">{{ comment.dislike}}</span>
+                </div>
             </div>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons" dir="ltr">
-            <button class="btn bg-light px-4 like" id="{{ comment.id }}-l">
-                <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
-                <small>{{ comment.like }}</small>
-            </button>
-            <button class="btn bg-light px-4 dislike" id="{{ comment.id }}-d">
-                <i class="fa fa-thumbs-down text-danger fa-lg" aria-hidden="true"></i>
-                <small>{{ comment.dislike }}</small>
-            </button>
-	    </div>
         </div>
     </div>
     <hr class="mx-5 bg-secondary">

@@ -30,7 +30,7 @@ class Tag(models.Model):
         verbose_name = 'برچسب'
         verbose_name_plural = 'برچسب‌ها'
 
-    label = models.CharField(max_length=30, unique=True,validators=[check_tag])
+    label = models.CharField(max_length=30, unique=True, validators=[check_tag])
 
     def count_used(self):
         return Post.objects.filter(tag__label=self.label).count()
@@ -76,7 +76,7 @@ class Comment(models.Model):
             ("can_confirm_comments", "Can confirm all comments"),
         ]
 
-    content = models.TextField('متن نظر')
+    content = models.TextField('متن نظر', max_length=400)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name='پست')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='كاربر')
     is_confirmed = models.BooleanField('مجاز', default=False)
@@ -91,6 +91,7 @@ class LikeCommentLog(models.Model):
     class Meta:
         verbose_name = 'گزارش پسنديدن يا نپسنديدن نظر'
         verbose_name_plural = 'گزارشات پسنديدن يا نپسنديدن نظرات'
+        unique_together = ['comment', 'user']
 
     comment = models.ForeignKey(Comment, on_delete=models.RESTRICT, verbose_name='نظر')
     user = models.ForeignKey(User, on_delete=models.RESTRICT, verbose_name='كاربر')

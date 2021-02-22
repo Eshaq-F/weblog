@@ -1,10 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse
 from django.views import generic
 from django.db.models import Q
-from rest_framework import serializers
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from .forms import *
 from .models import *
 from .validators import check_tag_form
@@ -23,9 +19,18 @@ class Home(generic.ListView):
 def view_post(request, post_id):
     post = Post.objects.get(pk=post_id)
     comments = Comment.objects.filter(post=post, is_confirmed=True)
-    print(comments)
-    categories = Category.objects.filter(parent=None)
-    return render(request, 'myblog/view_post.html', {'post': post, 'categories': categories, 'comments': comments})
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
+            return HttpResponseRedirect(reverse('myblog:view_post', args=(post_id,)))
+    else:
+        comment_form = CommentForm()
+    return render(request, 'myblog/view_post.html', {'post': post, 'comments': comments, 'comment_form': comment_form})
 
 
 def post_by_category(request, category_id):
@@ -36,7 +41,6 @@ def post_by_category(request, category_id):
 
 
 def post_by_tag(request, tag_id):
-    # tag = Tag.objects.filter(id=tag_id)
     posts = Post.objects.filter(tag=tag_id)
     return render(request, 'myblog/by_tag.html', {"posts": posts})
 
@@ -70,23 +74,3 @@ def add_post(request):
 
     return render(request, 'myblog/add_post.html', {"form": post_form, "tags": tags})
 
-
-# class PostSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = LikeCommentLog
-#         fields = ('id', 'comment', 'like_or_dislike')
-
-
-@api_view(['GET', 'POST'])
-def post_collection(request):
-    # if request.method == 'GET':
-    #     posts = Post.objects.all()
-    #     serializer = PostSerializer(posts, many=True)
-    #     return Response(serializer.data)
-    if request.method == 'POST':
-        comment = Comment.objects.get(pk=int(request.data['id']))
-        action = request.data['id']
-        print(action)
-        # if serializer.is_valid():
-        #     serializer.user = request.user
-        return Response(status=200)

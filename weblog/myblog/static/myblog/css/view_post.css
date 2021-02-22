@@ -1,0 +1,13 @@
+.like, .dislike {
+  position: absolute;
+
+}
+.badge-pill {
+  position: relative;
+  height: 1.5em;
+  left: -1em;
+  top: -0.5em;
+  z-index: 10;
+  background-color: red;
+  margin-right: 0.5em;
+}

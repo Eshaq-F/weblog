@@ -17,41 +17,6 @@
 <body dir="rtl" class="text-right">
 {% block navbar %}
 <div class="pos-f-t">
-<!--    <div class="collapse" id="navbarToggleExternalContent">-->
-<!--        <div class="bg-dark p-4">-->
-<!--            <div class="col-11 bg-light p-1 mx-auto d-flex justify-content-between account">-->
-<!--                {% if user.is_authenticated %}-->
-<!--                {% if user.userextrainfo.image %}-->
-<!--                <img src="{{ user.userextrainfo.image.url }}"-->
-<!--                     class="rounded-circle bg-dark p-1 mr-2" width="70">-->
-<!--                {% else %}-->
-<!--                <img src="https://itibalasore.org/wp-content/uploads/2018/02/default-user-male.png"-->
-<!--                     class="rounded-circle bg-dark p-1 mr-2" width="70">-->
-<!--                {% endif %}-->
-<!--                <p class="ml-auto mr-2 mt-2 align-self-center">-->
-<!--                    {{ user.first_name }} عزيز خوش آمديد ...-->
-<!--                </p>-->
-<!--                <a href="{% url 'myblog:add_post' %}" class="btn btn-dark my-3 button1">-->
-<!--                    افزودن پست-->
-<!--                    <i class="fa fa-plus" aria-hidden="true"></i>-->
-<!--                </a>-->
-<!--                <a href="#" class="btn btn-danger m-3 button1">-->
-<!--                    خروج-->
-<!--                    <i class="fas fa-sign-out-alt mt-1"></i>-->
-<!--                </a>-->
-<!--                {% endif %}-->
-<!--                {% if not user.is_authenticated %}-->
-<!--                <p class="align-self-center mt-2 mr-2">-->
-<!--                    شما وارد حساب كاربري خود نشده ايد ...-->
-<!--                </p>-->
-<!--                <a href="{% url 'login' %}" class="btn btn-success m-1 mr-auto button1">-->
-<!--                    ورود / ثبت‌ نام-->
-<!--                    <i class="fas fa-user-plus"></i>-->
-<!--                </a>-->
-<!--                {% endif %}-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
     <nav class="navbar navbar-dark bg-dark justify-content-between">
         <a href="{% url 'myblog:home' %}" class="text-decoration-none">
             <h1 class="text-muted">
@@ -59,111 +24,34 @@
                 وبلاگ من
             </h1>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
-                aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-<!--            <span class="navbar-toggler-icon"></span>-->
-              <div id="main">
-                <span style="font-size: 30px; cursor: pointer" onclick="openNav()">&#9776; open</span>
-              </div>
+        <button class="btn btn-outline-light d-flex py-0 px-2" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
+                id="main" onclick="openNav()">
+            <span style="font-size: 25px;">&#9776;</span>
         </button>
     </nav>
 </div>
 
-<style>
-  body {
-    font-family: "Lato", sans-serif;
-    transition: background-color 0.5s;
-  }
-
-  /* body > *:not(#mySidenav) {
-    filter: blur(3px);
-  } */
-
-
-  .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background: #f0f0f0;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
-
-  .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-  }
-
-  .sidenav a:hover {
-    color: #f1f1f1;
-  }
-
-  .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-
-  #main {
-    transition: margin-left 0.5s;
-    padding: 16px;
-  }
-
-  @media screen and (max-height: 450px) {
-    .sidenav {
-      padding-top: 15px;
-    }
-    .sidenav a {
-      font-size: 18px;
-    }
-  }
-</style>
-
 <div id="mySidenav" class="sidenav test-center">
   <div class="col-12 text-center mb-4">
-    <img
-      src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
-      class="rounded-circle"
-      width="130"
-      alt="Default Avatar"
-    />
+  {% if request.user.userextrainfo.image == null %}
+    <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
+      class="rounded-circle" width="130" alt="Default Avatar"/>
+  {% else %}
+      <img src="{{ request.user.userextrainfo.image.url }}" style="background-size: cover;"
+      class="rounded-circle" width="130" height="130" alt="Default Avatar"/>
+  {% endif %}
   </div>
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="#" class="text-center">خانه</a>
-  <a href="#" class="text-center">ورود</a>
-  <a href="#" class="text-center">ثبت نام</a>
-  <a href="#" class="text-center">افزودن پست</a>
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+  </a>
+  <div class="col-7 mx-auto text-center">
+      <a href="{% url 'myblog:home' %}" class="btn-secondary">خانه</a>
+      <a href="{% url 'login' %}" class="btn-secondary mt-2">ورود</a>
+      <a href="#" class="btn-secondary mt-2">ثبت نام</a>
+      <a href="#" class="btn-secondary mt-2">درباره ما</a>
+  </div>
 </div>
 
-<!--<div id="main">-->
-<!--  <span style="font-size: 30px; cursor: pointer" onclick="openNav()">&#9776; open</span>-->
-<!--</div>-->
-
-<script>
-  function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-    $("body > *:not(#mySidenav)").css('filter', 'blur(3px)')
-    $('body').stop()
-  }
-
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-    document.body.style.backgroundColor = "white";
-    $("body > *:not(#mySidenav)").css('filter', '')
-  }
-</script>
 {% endblock %}
 
 {% block content %}

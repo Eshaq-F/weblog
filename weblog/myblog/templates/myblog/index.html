@@ -36,7 +36,7 @@
 
         <div class="d-flex flex-wrap justify-content-between mr-1 ml-2">
         {% for post in posts_categories.1 %}
-          <a href="{% url 'myblog:view_post' post.id %}" class="card shadow m-2 mb-4 text-dark text-decoration-none" style="width: 26em; height: 27em">
+          <a href="{% url 'myblog:view_post' post.id %}" class="card shadow m-2 mb-4 text-dark text-decoration-none" style="width: 23.5em; height: 27em">
             <img src="{{ post.image.url }}" class="card-img-top" alt="..." height="50%">
             <div class="card-body">
               <h5 class="card-title">{{ post.title }}</h5>
