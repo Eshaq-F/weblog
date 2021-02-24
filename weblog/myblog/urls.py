@@ -12,4 +12,7 @@ urlpatterns = [
     path('post_by_category/<int:category_id>/', views.post_by_category, name='post_by_category'),
     path('post_by_tag/<int:tag_id>/', views.post_by_tag, name='post_by_tag'),
     path('comment_like_dislike/<int:pk>/', views_api.LikeCommentLogList.as_view(), name='comment_like_dislike'),
+    path('comment_like_dislike/', views_api.LikeCommentLogList.as_view(), name='comment_like_dislike'),
+    path('post_like_dislike/<int:pk>/', views_api.LikePostLogList.as_view(), name='post_like_dislike'),
+    path('post_like_dislike/', views_api.LikePostLogList.as_view(), name='post_like_dislike'),
 ]

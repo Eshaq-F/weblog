@@ -20,8 +20,19 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
+$('.comments hr').last().remove()
 $('.like').click(like)
 $('.dislike').click(dislike)
+
+$.get('/myblog/comment_like_dislike/').done(function(resp) {
+  resp.forEach(function(i){
+    if (i.like_or_dislike == true){
+      $('#' + i.comment + '-l' + ' i').addClass('text-success')
+    }else{
+      $('#' + i.comment + '-d' + ' i').addClass('text-danger')
+    }
+  })
+})
 
 function like() {
   var $btnId = $(this).attr('id')
@@ -40,9 +51,6 @@ function like() {
         dataType: "json",
         url: "/myblog/comment_like_dislike/" + $btnId.replace('-l', '') + "/",
         data: {'like_dislike': true},
-        success: function(data){
-            console.log("PUT")
-        }
     })
   }else if ($('#' + $btnId + ' i').hasClass('text-success')){
     $('#' + $btnId + ' i').removeClass('text-success')
@@ -53,15 +61,12 @@ function like() {
         },
         type: "DELETE",
         url: "/myblog/comment_like_dislike/" + $btnId.replace('-l', '') + "/",
-        success: function(status){
-            console.log("DELETE")
-        }
     })
   }else {
     $('#' + $btnId + ' i').addClass('text-success')
     $('#' + $btnId).next().text($likeNum + 1)
     $.post({url: "/myblog/comment_like_dislike/" + $btnId.replace('-l', '') + "/", headers: {'X-CSRFTOKEN': csrftoken},
-    data: {'like_dislike': true}}).done(console.log('POST'))
+    data: {'like_dislike': true}})
   }
 }
 
@@ -82,9 +87,6 @@ function dislike() {
         dataType: "json",
         url: "/myblog/comment_like_dislike/" + $btnId.replace('-d', '') + "/",
         data: {'like_dislike': false},
-        success: function(data){
-            console.log("PUT")
-        }
     })
   }else if ($('#' + $btnId + ' i').hasClass('text-danger')){
     $('#' + $btnId + ' i').removeClass('text-danger')
@@ -95,14 +97,96 @@ function dislike() {
         },
         type: "DELETE",
         url: "/myblog/comment_like_dislike/" + $btnId.replace('-d', '') + "/",
-        success: function(status){
-            console.log("DELETE")
-        }
     })
   }else {
     $('#' + $btnId + ' i').addClass('text-danger')
     $('#' + $btnId).next().text($dislikeNum + 1)
     $.post({url: "/myblog/comment_like_dislike/" + $btnId.replace('-d', '') + "/", headers: {'X-CSRFTOKEN': csrftoken},
-    data: {'like_dislike': false}}).done(console.log("POST"))
+    data: {'like_dislike': false}})
+  }
+}
+
+$('.like-post').click(likePost)
+$('.dislike-post').click(dislikePost)
+
+$.get('/myblog/post_like_dislike/').done(function(resp) {
+  resp.forEach(function(i){
+    if (i.like_or_dislike == true){
+      $('#' + i.post + '-lp' + ' i').addClass('text-success')
+    }else{
+      $('#' + i.post + '-dp' + ' i').addClass('text-danger')
+    }
+  })
+})
+
+function likePost() {
+  var $btnId = $(this).attr('id')
+  var $likeNum = parseInt($('#' + $btnId).next().text())
+  var $dislikeNum = parseInt($('#' + $btnId.replace('-l', '-d')).next().text())
+  if ($('#' + $btnId.replace('-lp', '-dp') + ' i').hasClass('text-danger')){
+    $('#' + $btnId.replace('-lp', '-dp') + ' i').removeClass("text-danger")
+    $('#' + $btnId + ' i').addClass('text-success')
+    $('#' + $btnId.replace('-l', '-d')).next().text($dislikeNum - 1)
+    $('#' + $btnId).next().text($likeNum + 1)
+    $.ajax({
+        headers: {
+            'X-CSRFTOKEN': csrftoken
+        },
+        type: "PUT",
+        dataType: "json",
+        url: "/myblog/post_like_dislike/" + $btnId.replace('-lp', '') + "/",
+        data: {'like_dislike': true},
+    })
+  }else if ($('#' + $btnId + ' i').hasClass('text-success')){
+    $('#' + $btnId + ' i').removeClass('text-success')
+    $('#' + $btnId).next().text($likeNum - 1)
+    $.ajax({
+        headers: {
+            'X-CSRFTOKEN': csrftoken
+        },
+        type: "DELETE",
+        url: "/myblog/post_like_dislike/" + $btnId.replace('-lp', '') + "/",
+    })
+  }else {
+    $('#' + $btnId + ' i').addClass('text-success')
+    $('#' + $btnId).next().text($likeNum + 1)
+    $.post({url: "/myblog/post_like_dislike/" + $btnId.replace('-lp', '') + "/", headers: {'X-CSRFTOKEN': csrftoken},
+    data: {'like_dislike': true}})
+  }
+}
+
+function dislikePost() {
+  var $btnId = $(this).attr('id')
+  var $dislikeNum = parseInt($('#' + $btnId).next().text())
+  var $likeNum = parseInt($('#' + $btnId.replace('-dp', '-lp')).next().text())
+  if ($('#' + $btnId.replace('-dp', '-lp') + ' i').hasClass('text-success')){
+    $('#' + $btnId.replace('-dp', '-lp') + ' i').removeClass("text-success")
+    $('#' + $btnId + ' i').addClass('text-danger')
+    $('#' + $btnId.replace('-dp', '-lp')).next().text($likeNum - 1)
+    $('#' + $btnId).next().text($dislikeNum + 1)
+    $.ajax({
+        headers: {
+            'X-CSRFTOKEN': csrftoken
+        },
+        type: "PUT",
+        dataType: "json",
+        url: "/myblog/post_like_dislike/" + $btnId.replace('-dp', '') + "/",
+        data: {'like_dislike': false},
+    })
+  }else if ($('#' + $btnId + ' i').hasClass('text-danger')){
+    $('#' + $btnId + ' i').removeClass('text-danger')
+    $('#' + $btnId).next().text($dislikeNum - 1)
+    $.ajax({
+        headers: {
+            'X-CSRFTOKEN': csrftoken
+        },
+        type: "DELETE",
+        url: "/myblog/post_like_dislike/" + $btnId.replace('-dp', '') + "/",
+    })
+  }else {
+    $('#' + $btnId + ' i').addClass('text-danger')
+    $('#' + $btnId).next().text($dislikeNum + 1)
+    $.post({url: "/myblog/post_like_dislike/" + $btnId.replace('-dp', '') + "/", headers: {'X-CSRFTOKEN': csrftoken},
+    data: {'like_dislike': false}})
   }
 }

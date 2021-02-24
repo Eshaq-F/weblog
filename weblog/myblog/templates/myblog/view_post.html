@@ -61,7 +61,17 @@
             </div>
             <img src="{{ post.image.url }}" class="rounded" width="500">
         </div>
-        <p class="my-3 mb-5 mx-5">{{ post.content }}</p>
+        <p class="my-3 mb-1 mx-5">{{ post.content }}</p>
+        <div class="btn-group-vertical btn-group-toggle post-action" data-toggle="buttons" dir="ltr" style="float: left;margin-top: -5em;">
+            <button class="btn btn-dark rounded-circle p-2 like-post" id="{{ post.id }}-lp">
+                <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
+            </button>
+            <span class="badge badge-pill badge-info">{{ post.like}}</span>
+            <button class="btn btn-dark rounded-circle p-2 dislike-post" id="{{ post.id }}-dp">
+                <i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i>
+            </button>
+            <span class="badge badge-pill badge-info">{{ post.dislike}}</span>
+        </div>
     </div>
 </div>
 
@@ -82,7 +92,7 @@
     </form>
 </div>
 
-<div class="col-11 mx-auto mb-3 rounded shadow">
+<div class="col-11 mx-auto mb-3 rounded shadow comments">
     {% for comment in comments %}
     <div class="p-3 d-flex align-items-center justify-content-center">
         <img src="{{ comment.user.userextrainfo.image.url }}" class="rounded-circle ml-3"

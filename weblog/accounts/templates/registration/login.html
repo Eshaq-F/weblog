@@ -1,15 +1,61 @@
-{% extends 'myblog/base.html' %}
-{% block title %}ورود{% endblock %}
+<!DOCTYPE html>
 {% load static %}
+<html lang="fa">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'registration/css/login.css' %}">
+    <title>ورود / ثبت نام</title>
+</head>
 
-{% block extra-link %}
-<link rel="stylesheet" type="text/css" href="{% static 'myblog/css/index.css' %}">
-{% endblock %}
+<body dir="rtl" class="text-right">
+<div class="login-reg-panel rounded">
+    <div class="login-info-box">
+        <h2 class="text-center">حساب كاربري داريد؟</h2>
+        <label id="label-register" for="log-reg-show" class="mt-5">ورود</label>
+        <input type="radio" name="active-log-panel" id="log-reg-show" checked="checked"/>
+    </div>
 
-{% block content %}
-<div class="col-6 mx-auto mt-5">
-    <h1 class="text-center">Login Page</h1>
+    <div class="register-info-box">
+        <h2 class="text-center">حساب كاربري نداريد؟</h2>
+        <label id="label-login" for="log-login-show" class="mt-5">ثبت نام</label>
+        <input type="radio" name="active-log-panel" id="log-login-show"/>
+    </div>
+
+    <div class="white-panel rounded">
+        <div class="login-show">
+            <h2 class="text-right">ورود</h2>
+            <input type="text" placeholder="نام كاربري"/>
+            <input type="password" placeholder="رمزعبور"/>
+            <a href="" class="text-dark">بازگشت به سايت</a>
+            <button type="submit" class="btn btn-info mt-4 mr-auto pb-2 px-5">ورود</button>
+        </div>
+        <div class="register-show">
+            <h2 class="text-right">ثبت نام</h2>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <input type="text" placeholder="نام">
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" placeholder="نام خانوادگي">
+                </div>
+            </div>
+            <input type="text" placeholder="نام كاربري"/>
+            <input type="text" placeholder="پست الكترونيك"/>
+            <input type="password" placeholder="رمزعبور"/>
+            <input type="password" placeholder="تكرار رمز عبور"/>
+            <button type="submit" class="btn btn-info px-4 mt-4 mx-auto">ثبت نام</button>
+            <a href="" class="text-dark">بازگشت به سايت</a>
+        </div>
+    </div>
 </div>
-{% endblock %}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="{% static 'registration/js/login.js' %}"></script>
+</body>
+</html>
+
 
 

@@ -18,7 +18,7 @@ class Home(generic.ListView):
 
 def view_post(request, post_id):
     post = Post.objects.get(pk=post_id)
-    comments = Comment.objects.filter(post=post, is_confirmed=True)
+    comments = Comment.objects.filter(post=post, is_confirmed=True).order_by('date_time')
 
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)

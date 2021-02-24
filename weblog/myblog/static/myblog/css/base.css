@@ -58,3 +58,21 @@ padding: 16px;
   font-size: 18px;
 }
 }
+.form-control:focus {
+  box-shadow: none;
+}
+.form-control::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+.input-group input[type=search] {
+  width: 4.8em;
+  padding: 0em !important;
+  border-radius: 24px;
+  font-size: 14px;
+  -webkit-transition: width 0.4s ease-in-out;
+  transition: width 0.4s ease-in-out;
+}
+.input-group input[type=search]:focus {
+  width: 19em;
+}

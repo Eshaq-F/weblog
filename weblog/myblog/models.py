@@ -82,6 +82,7 @@ class Comment(models.Model):
     is_confirmed = models.BooleanField('مجاز', default=False)
     like = models.IntegerField('پسنديده', default=0)
     dislike = models.IntegerField('نپسنديده', default=0)
+    date_time = models.DateTimeField('تاريخ و زمان نظر', auto_now_add=True, blank=True)
 
     def __str__(self):
         return f'نظر كاربر {self.user}'

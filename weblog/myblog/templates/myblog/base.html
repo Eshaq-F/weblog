@@ -24,10 +24,28 @@
                 وبلاگ من
             </h1>
         </a>
-        <button class="btn btn-outline-light d-flex py-0 px-2" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent"
-                id="main" onclick="openNav()">
-            <span style="font-size: 25px;">&#9776;</span>
-        </button>
+        <div class="d-flex align-items-center">
+            <button class="btn btn-outline-success mx-2" type="button" style="border-radius: 24px;">
+                جستجوي پيشرفته
+            </button>
+            <form action="" dir="ltr">
+              <div class="bg-light rounded rounded-pill shadow-sm"  data-toggle="tooltip" data-placement="bottom"
+                   title="جستجوي همزمان در عنوان ، متن و نويسنده مطلب">
+                <div class="input-group d-flex align-items-center">
+                  <div class="input-group-prepend">
+                    <button id="button-addon2" type="submit" class="btn btn-linktext text-primary">
+                        <i class="fa fa-search"></i>
+                    </button>
+                  </div>
+                  <input type="search" placeholder="جستجو" class="form-control border-0 m-0 mr-2 bg-light text-right" style="height: 1em;">
+                </div>
+              </div>
+            </form>
+            <button class="btn btn-outline-light h-50 py-0 px-2 mr-2" type="button" data-toggle="collapse"
+                    data-target="#navbarToggleExternalContent" id="main" onclick="openNav()">
+                <span style="font-size: 24px;">&#9776;</span>
+            </button>
+        </div>
     </nav>
 </div>
 

@@ -4,7 +4,13 @@ from rest_framework.views import APIView
 from .models import *
 
 
-class LikeCommentLogSerializer(serializers.Serializer):
+class LikeCommentLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = LikeCommentLog
         fields = ['id', 'comment', 'user', 'like_or_dislike']
+
+
+class LikePostLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LikePostLog
+        fields = ['id', 'post', 'user', 'like_or_dislike']
