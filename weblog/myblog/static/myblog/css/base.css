@@ -81,6 +81,9 @@ body {
 .input-group input[type=search]:focus {
     width: 19em;
 }
+input .user {
+    opacity: 0.5;
+}
 #selection {
     height: 6.5em;
     overflow: auto;
