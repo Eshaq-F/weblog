@@ -1,7 +1,15 @@
+html, body {
+  height: 100%;
+}
+#id_content {
+  height: 23em;
+}
+#id_title::placeholder {
+  color: #616161;
+}
 .select2-container {
  width: 400px;
 }
-
 .select2-results__option {
   padding-right: 20px;
   vertical-align: middle;

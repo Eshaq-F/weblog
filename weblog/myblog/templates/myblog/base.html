@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% block links %}
 {% load static %}
+{% load bootstrap %}
+
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +18,7 @@
 {% endblock %}
 <body dir="rtl" class="text-right">
 {% block navbar %}
-<div class="pos-f-t">
+<div class="pos-f-t main-nav">
     <nav class="navbar navbar-dark bg-dark justify-content-between">
         <a href="{% url 'myblog:home' %}" class="text-decoration-none">
             <h1 class="text-muted">
@@ -25,21 +27,21 @@
             </h1>
         </a>
         <div class="d-flex align-items-center">
-            <button class="btn btn-outline-success mx-2" type="button" style="border-radius: 24px;">
-                جستجوي پيشرفته
-            </button>
-            <form action="" dir="ltr">
-              <div class="bg-light rounded rounded-pill shadow-sm"  data-toggle="tooltip" data-placement="bottom"
-                   title="جستجوي همزمان در عنوان ، متن و نويسنده مطلب">
-                <div class="input-group d-flex align-items-center">
-                  <div class="input-group-prepend">
-                    <button id="button-addon2" type="submit" class="btn btn-linktext text-primary">
-                        <i class="fa fa-search"></i>
-                    </button>
-                  </div>
-                  <input type="search" placeholder="جستجو" class="form-control border-0 m-0 mr-2 bg-light text-right" style="height: 1em;">
+            <form action="{% url 'myblog:simple_search' %}" dir="ltr" method="post">
+                {% csrf_token %}
+                <div class="bg-light rounded rounded-pill shadow-sm ml-3">
+                    <div class="input-group d-flex align-items-center">
+                        <div class="input-group-prepend">
+                            <button id="button-addon2" type="submit" class="btn btn-linktext text-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        <input type="search" placeholder="جستجو" name="simple-search"
+                               class="form-control border-0 m-0 mr-3 bg-light text-right"
+                               data-toggle="tooltip" data-placement="bottom" style="height: 1em;"
+                               title="جستجوي همزمان در عنوان ، متن و نويسنده مطلب" autocomplete="off">
+                    </div>
                 </div>
-              </div>
             </form>
             <button class="btn btn-outline-light h-50 py-0 px-2 mr-2" type="button" data-toggle="collapse"
                     data-target="#navbarToggleExternalContent" id="main" onclick="openNav()">
@@ -50,29 +52,89 @@
 </div>
 
 <div id="mySidenav" class="sidenav test-center">
-  <div class="col-12 text-center mb-4">
-  {% if request.user.userextrainfo.image == null %}
-    <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
-      class="rounded-circle" width="130" alt="Default Avatar"/>
-  {% else %}
-      <img src="{{ request.user.userextrainfo.image.url }}" style="background-size: cover;"
-      class="rounded-circle" width="130" height="130" alt="Default Avatar"/>
-  {% endif %}
-  </div>
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
-      <i class="fa fa-times" aria-hidden="true"></i>
-  </a>
-  <div class="col-7 mx-auto text-center">
-      <a href="{% url 'myblog:home' %}" class="btn-secondary">خانه</a>
-      <a href="{% url 'login' %}" class="btn-secondary mt-2">ورود</a>
-      <a href="#" class="btn-secondary mt-2">ثبت نام</a>
-      <a href="#" class="btn-secondary mt-2">درباره ما</a>
-  </div>
+    <div class="col-12 text-center mb-4">
+        {% if not request.user.is_authenticated or request.user.userextrainfo.image == null %}
+        <img src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
+             class="rounded-circle" width="130" alt="Default Avatar"/>
+        {% else %}
+        <img src="{{ request.user.userextrainfo.image.url }}" style="background-size: cover;"
+             class="rounded-circle" width="130" height="130" alt="Default Avatar"/>
+        {% endif %}
+    </div>
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+    <div class="col-7 mx-auto text-center">
+        {% if not request.user.is_authenticated %}
+        <a href="{% url 'myblog:home' %}" class="btn-secondary px-2">خانه</a>
+        <a href="{% url 'accounts:login' %}" class="btn-secondary mt-2 px-2">ورود/ ثبت‌نام</a>
+        <button class="btn-secondary mt-2 px-2 border-0" data-toggle="modal" data-target="#append"
+                onclick="closeNav()" id="sch">
+            جستجوي پيشرفته
+        </button>
+        <a href="#" class="btn-secondary mt-2 px-2">درباره ما</a>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'myblog:home' %}" class="btn-secondary px-2">خانه</a>
+        <button class="btn-secondary mt-2 px-2 border-0" data-toggle="modal" data-target="#append"
+                onclick="closeNav()" id="sch">
+            جستجوي&nbsp; پيشرفته
+        </button>
+        <a href="#" class="btn-secondary mt-2 px-2">درباره ما</a>
+        <a href="{% url 'accounts:logout' %}" class="btn-secondary mt-2 px-2">خروج</a>
+        {% endif %}
+    </div>
+
 </div>
 
+<div class="modal fade" id="append" tabindex="-3" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header p-1">
+              <span class="mb-2">
+                <h5 class="modal-title mt-3 mb-0">جستجوي پيشرفته</h5>
+                <small>
+                    <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
+                    توجه فرماييد كه كلمات عيناً جستوجو مي‌شوند!
+                </small>
+              </span>
+                <button type="button" class="btn btn-outline-secondary m-0 p-1 border-0" data-dismiss="modal">
+                    <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'myblog:advanced_search' %}" enctype="multipart/form-data" method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="{{ search_form.title.label }}"
+                                   id="id_title" name="title" maxlength="50" minlength="2" required>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="{{ search_form.content.label }}"
+                                   id="id_content" name="content" maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="form-col mt-2">
+                        {{ search_form.author|bootstrap }}
+                    </div>
+                    <label>برچسب ها</label>
+                    <div class="form-control" id="selection">
+                        {{ search_form.tags }}
+                    </div>
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-outline-primary mt-3">جستجوي پست</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block content %}
+<div class="main-container m-0 p-0"></div>
 {% endblock %}
 
 {% block static %}

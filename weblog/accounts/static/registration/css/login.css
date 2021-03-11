@@ -9,6 +9,10 @@ body {
   background-size: cover;
   position: relative;
 }
+ul {
+  list-style: none;
+  padding: 0;
+}
 .login-reg-panel {
   position: relative;
   top: 50%;
@@ -81,12 +85,14 @@ body {
   text-align: left;
   padding: 50px;
 }
+.register-show {
+  padding-top: 1em;
+}
 .show-log-panel {
   display: block;
   opacity: 0.9;
 }
-input[type="text"],
-input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"] {
   width: 100%;
   display: block;
   padding: 10px;
@@ -115,20 +121,6 @@ input[type="password"] {
 }
 label:hover {
     background-color: #353535;
-    color: #ffffff;
+    color: #fff;
     transition: 0.3s;
-}
-.credit {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  color: #3b3b25;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  z-index: 99;
 }

@@ -4,9 +4,15 @@ from .validators import check_phone_number, check_tag
 
 
 class UserExtraInfo(models.Model):
-    phone = models.CharField('شماره تلفن', max_length=13, validators=[check_phone_number], null=True)
-    image = models.ImageField('تصوير پروفايل', upload_to='posts_img', null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='کاربر', null=True)
+    class Meta:
+        verbose_name = 'اطلاعات اضافي'
+
+    phone = models.CharField('شماره تلفن', max_length=13, validators=[check_phone_number])
+    image = models.ImageField('تصوير پروفايل', upload_to='avatars', null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='کاربر')
+
+    def __str__(self):
+        return f"كاربر {self.user}"
 
 
 class Category(models.Model):
@@ -54,8 +60,7 @@ class Post(models.Model):
     image = models.ImageField('تصوير', upload_to='posts_img', null=True)
     tag = models.ManyToManyField(Tag, verbose_name='برچسب',
                                  help_text='برچسب ها با# آغاز مي‌شوند و فقط شامل حروف الفبا و _ مي‌شوند. '
-                                           'برچسب‌ها را با فاصله از هم جدا كنيد',
-                                 null=True)
+                                           'برچسب‌ها را با فاصله از هم جدا كنيد', null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='دسته‌بندي')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='نويسنده')
     is_active = models.BooleanField('فعال', default=True)

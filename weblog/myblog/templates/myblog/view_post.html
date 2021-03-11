@@ -62,6 +62,7 @@
             <img src="{{ post.image.url }}" class="rounded" width="500">
         </div>
         <p class="my-3 mb-1 mx-5">{{ post.content }}</p>
+        {% if request.user.is_authenticated %}
         <div class="btn-group-vertical btn-group-toggle post-action" data-toggle="buttons" dir="ltr" style="float: left;margin-top: -5em;">
             <button class="btn btn-dark rounded-circle p-2 like-post" id="{{ post.id }}-lp">
                 <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
@@ -72,9 +73,11 @@
             </button>
             <span class="badge badge-pill badge-info">{{ post.dislike}}</span>
         </div>
+        {% endif %}
     </div>
 </div>
 
+{% if request.user.is_authenticated %}
 <div class="col-11 bg-dark mx-auto mb-4 mt-2 py-2 px-5 shadow" style="border-radius: 130px;">
     <form enctype="multipart/form-data" class="d-flex flex-column" action="{% url 'myblog:view_post' post.id %}"
           method="post">
@@ -91,6 +94,7 @@
         <input type="submit" value="ثبت نظر" class="btn btn-outline-light w-25 mx-auto my-2">
     </form>
 </div>
+{% endif %}
 
 <div class="col-11 mx-auto mb-3 rounded shadow comments">
     {% for comment in comments %}
@@ -101,6 +105,7 @@
             <p class="text-primary mb-0">{{ comment.user.get_full_name }}:</p>
             <div class="col-11 p-3 bg-dark h-75 d-flex align-items-center justify-content-between rounded">
                 <p class="text-light my-auto">{{ comment.content }}</p>
+                {% if request.user.is_authenticated %}
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" dir="ltr">
                     <button class="btn bg-light rounded-circle p-2 like" id="{{ comment.id }}-l">
                         <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
@@ -111,12 +116,14 @@
                     </button>
                     <span class="badge badge-pill badge-danger">{{ comment.dislike}}</span>
                 </div>
+                {% endif %}
             </div>
         </div>
     </div>
     <hr class="mx-5 bg-secondary">
     {% endfor %}
 </div>
+<input type="hidden" name="next" value="{{ request.path }}">
 
 <script>
 var now = new Date({{ post.pub_date.year }}, {{ post.pub_date.month }}, {{ post.pub_date.day }},

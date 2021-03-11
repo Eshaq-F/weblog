@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.1/css/font-awesome.css"
+      integrity="sha512-bf5lgyUrZOfPh94XyXFK4+2062lAMQFAfxUTVkOAHZ7R3XQ0tY+TUSkbqt8sjFsq0hVMKvGT/1P39c+vKwesTQ=="
+      crossorigin="anonymous"/>
     <link rel="stylesheet" type="text/css" href="{% static 'registration/css/login.css' %}">
     <title>ورود / ثبت نام</title>
 </head>
@@ -26,33 +29,84 @@
 
     <div class="white-panel rounded">
         <div class="login-show">
-            <h2 class="text-right">ورود</h2>
-            <input type="text" placeholder="نام كاربري"/>
-            <input type="password" placeholder="رمزعبور"/>
-            <a href="" class="text-dark">بازگشت به سايت</a>
-            <button type="submit" class="btn btn-info mt-4 mr-auto pb-2 px-5">ورود</button>
+            <form method="post" action="{% url 'accounts:login' %}" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <h2 class="text-right">ورود به وبلاگ</h2>
+                <input type="text" name="username" autocapitalize="none" class="form-control" placeholder="نام كاربري"
+                       autocomplete="username" maxlength="150" id="id_username" autofocus required>
+                <input type="password" name="password" autocomplete="current-password" class="form-control"
+                       id="id_password" placeholder="رمزعبور" required>
+                <button type="submit" class="btn btn-info mt-4 mr-auto pb-2 px-5">ورود</button>
+                <a href="{% url 'myblog:home' %}" class="text-dark text-decoration-none site">
+                    <i class="fa fa-home text-info" aria-hidden="true"></i>
+                    بازگشت به سايت
+                </a>
+                {% if login_form.non_field_errors %}
+                <div class="alert alert-danger mt-5 text-center" role="alert">
+                    {{ login_form.non_field_errors }}
+                </div>
+                {% endif %}
+            </form>
         </div>
         <div class="register-show">
-            <h2 class="text-right">ثبت نام</h2>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <input type="text" placeholder="نام">
+            <form method="post" action="{% url 'accounts:login' %}" enctype='multipart/form-data'
+                  class="needs-validation" novalidate>
+                {% csrf_token %}
+                <h2 class="text-right">ثبت نام</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="text" name="first_name" maxlength="30" id="id_first_name" placeholder=" نام *">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" name="last_name" maxlength="30" id="id_last_name" placeholder="نام خانوادگي *">
+                    </div>
                 </div>
-                <div class="form-group col-md-6">
-                    <input type="text" placeholder="نام خانوادگي">
+                <input type="text" name="username" maxlength="150" id="id_username"
+                       placeholder=" نام كاربري *" required autofocus>
+                <div class="custom-file mt-4">
+                    <input type="file" name="image" accept="image/*" value="dd"
+                           class="custom-file-input form-control" id="id_image">
+                    <label class="custom-file-label text-center border-info" for="id_image">تصوير پروفايل</label>
                 </div>
-            </div>
-            <input type="text" placeholder="نام كاربري"/>
-            <input type="text" placeholder="پست الكترونيك"/>
-            <input type="password" placeholder="رمزعبور"/>
-            <input type="password" placeholder="تكرار رمز عبور"/>
-            <button type="submit" class="btn btn-info px-4 mt-4 mx-auto">ثبت نام</button>
-            <a href="" class="text-dark">بازگشت به سايت</a>
+                <input type="text" name="phone" maxlength="13" id="id_phone" placeholder="شماره تلفن" required>
+                <input type="email" name="email" maxlength="254" id="id_email"
+                       placeholder="پست الكترونيك" required>
+                <input type="password" name="password1" autocomplete="new-password" id="id_password1"
+                       placeholder="رمزعبور *" required>
+                <input type="password" name="password2" autocomplete="new-password" id="id_password2"
+                       placeholder="تكرار رمز عبور *" required>
+                <button type="submit" class="btn btn-info px-4 mt-4 mx-auto">ثبت نام</button>
+                <a href="{% url 'myblog:home' %}" class="text-dark text-decoration-none">
+                    <i class="fa fa-home text-info" aria-hidden="true"></i>
+                    بازگشت به سايت
+                </a>
+            </form>
+            <input type="hidden" name="next" value="{{ next }}">
         </div>
     </div>
+
+<script>
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
 </div>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="{% static 'registration/js/login.js' %}"></script>
 </body>
 </html>

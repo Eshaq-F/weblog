@@ -1,3 +1,8 @@
+$('#id_image').on('change',function(){
+    var fileName = $(this).val();
+    $(this).next('.custom-file-label').html(fileName);
+})
+
 $(".js-select2").select2({
     closeOnSelect : false,
     placeholder : "برچسب انتخاب كنيد ...",
@@ -16,7 +21,6 @@ $('.icons_select2').select2({
     allowClear: true,
     multiple: false
 });
-
 
 function iformat(icon, badge,) {
     var originalOption = icon.element;

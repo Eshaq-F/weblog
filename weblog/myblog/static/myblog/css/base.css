@@ -4,75 +4,94 @@
 }
 
 * {
-font-family: "Scheherazade";
+    font-family: "Scheherazade";
+}
+input::placeholder {
+    font-family: Arial, Helvetica;
 }
 
 body {
-transition: background-color 0.5s;
+    transition: background-color 0.5s;
 }
 .sidenav {
-height: 100%;
-width: 0;
-position: fixed;
-z-index: 1;
-top: 0;
-left: 0;
-overflow-x: hidden;
-transition: 0.5s;
-padding-top: 60px;
-background-image: url(https://perso.telecom-paristech.fr/linguaglossa/html/assets/img/sidebar-4.jpg);
-background-size: cover;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    background-image: url(https://perso.telecom-paristech.fr/linguaglossa/html/assets/img/sidebar-4.jpg);
+    background-size: cover;
+}
+.sidenav #sch {
+    font-size: 17px;
+}
+.sidenav a, #sch {
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #404040;
+    display: block;
+    transition: 0.3s;
 }
 
-.sidenav a {
-border-radius: 20px;
-text-decoration: none;
-font-size: 25px;
-color: #404040;
-display: block;
-transition: 0.3s;
-}
-
-.sidenav a:hover {
-color: #f1f1f1;
+.sidenav a:hover, #sch:hover {
+    color: #f1f1f1;
 }
 
 .sidenav .closebtn {
-position: absolute;
-top: 0;
-right: 10px;
-font-size: 36px;
-margin-left: 50px;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 36px;
+    margin-left: 50px;
 }
 
 #main {
-transition: margin-left 0.5s;
-padding: 16px;
+    transition: margin-left 0.5s;
+    padding: 16px;
 }
 
 @media screen and (max-height: 450px) {
 .sidenav {
-  padding-top: 15px;
+    padding-top: 15px;
 }
 .sidenav a {
-  font-size: 18px;
+    font-size: 18px;
 }
 }
 .form-control:focus {
-  box-shadow: none;
+    box-shadow: none;
 }
 .form-control::placeholder {
-  color: #aaa;
-  font-style: italic;
+    color: #aaa;
+    font-style: italic;
 }
 .input-group input[type=search] {
-  width: 4.8em;
-  padding: 0em !important;
-  border-radius: 24px;
-  font-size: 14px;
-  -webkit-transition: width 0.4s ease-in-out;
-  transition: width 0.4s ease-in-out;
+    width: 4.8em;
+    padding: 0em !important;
+    border-radius: 24px;
+    font-size: 14px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
 }
 .input-group input[type=search]:focus {
-  width: 19em;
+    width: 19em;
+}
+#selection {
+    height: 6.5em;
+    overflow: auto;
+    scrollbar-width: none;
+}
+#selection ul {
+    list-style:none;
+    padding-right: 0.5em;
+}
+#selection li:hover {
+    color: #fff;
+    background-color: #aaa;
+    border-radius: 0.2em;
 }
